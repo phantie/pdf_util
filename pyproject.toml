@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pdf_util"
+version = "0.1.0"
+description = "Adobe Acrobat styled pdf document signing and other pdf utilities"
+authors = ["phantie <funtom1605@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pypdf = "^4.2.0"
+PyMuPDF = "^1.24.5"
+pillow = "^10.3.0"
+pydantic = "^2.8.0"
+pyhanko = "^0.25.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

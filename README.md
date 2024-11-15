@@ -68,7 +68,7 @@ with open("signed.pdf", "wb+") as f:
 
 ## Result
 
-<img width="734" alt="Screenshot 2024-11-15 at 18 47 41" src="https://github.com/user-attachments/assets/c9ff1c52-4b8d-4bc2-9b13-5b474f1ab637">
+<img width="613" alt="Screenshot 2024-11-15 at 19 31 09-min" src="https://github.com/user-attachments/assets/91012424-c27d-4602-bf1a-575d79f0b519">
 
 
 ## Avalable customizations

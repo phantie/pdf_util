@@ -28,54 +28,68 @@ from datetime import timezone
 
 margins = Margins.equal(50)
 
-value = visually_sign_doc(value, params=SignDocParams(
-    pages_to_sign=SomePages(pages=[0]), # sign 1st page
-    page_params=SignPageParams(
-        signer_name="Ali Baba Babababa",
-        align_horizontal="left",
-        align_vertical="up",
-        margins=margins,
-        scale=2,
-        under_text_align="center",
-        left_box_text_align="left",
-        locale=EN_LOCALE_SIGN_PAGE_PARAMS,
-        datetime=ScalarDatetimeSignPageParams(datetime=datetime.now(tz=timezone(timedelta(hours=2)))),
-    ),
-))
-
-
-value = visually_sign_doc(value, params=SignDocParams(
-    pages_to_sign=SomePages(pages=[0]), # sign 1st page
-    page_params=SignPageParams(
-        signer_name="First Middle Last",
-        align_horizontal="right",
-        align_vertical="center",
-        margins=margins,
-        scale=2,
-        left_box_text_align="right",
-        locale=UK_LOCALE_SIGN_PAGE_PARAMS,
-        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=7))),
-    ),
-))
-
-value = visually_sign_doc(value, params=SignDocParams(
-    pages_to_sign=SomePages(pages=[0]), # sign 1st page
-    page_params=SignPageParams(
-        signer_name="Alexander Alexandrovich Alexandro",
-        align_horizontal="center",
-        align_vertical="bottom",
-        margins=margins,
-        scale=2,
-        under_text_align="align_with_right",
-        left_box_text_align="center",
-        locale=LocaleSignPageParams(
-            digitally_signed_by="Signé numériquement par ",
-            date="Date: ",
-            signature="(signature)",
+value = visually_sign_doc(
+    value,
+    params=SignDocParams(
+        pages_to_sign=SomePages(pages=[0]),  # Sign 1st page
+        page_params=SignPageParams(
+            signer_name="Ali Baba Babababa",
+            align_horizontal="left",
+            align_vertical="up",
+            margins=margins,
+            scale=2,
+            under_text_align="center",
+            left_box_text_align="left",
+            locale=EN_LOCALE_SIGN_PAGE_PARAMS,
+            datetime=ScalarDatetimeSignPageParams(
+                datetime=datetime.now(tz=timezone(timedelta(hours=2)))
+            ),
         ),
-        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=-3))),
-    ),
-))
+    )
+)
+
+value = visually_sign_doc(
+    value,
+    params=SignDocParams(
+        pages_to_sign=SomePages(pages=[0]),  # Sign 1st page
+        page_params=SignPageParams(
+            signer_name="First Middle Last",
+            align_horizontal="right",
+            align_vertical="center",
+            margins=margins,
+            scale=2,
+            left_box_text_align="right",
+            locale=UK_LOCALE_SIGN_PAGE_PARAMS,
+            datetime=CalculatedDatetimeSignPageParams(
+                calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=7))
+            ),
+        ),
+    )
+)
+
+value = visually_sign_doc(
+    value,
+    params=SignDocParams(
+        pages_to_sign=SomePages(pages=[0]),  # Sign 1st page
+        page_params=SignPageParams(
+            signer_name="Alexander Alexandrovich Alexandro",
+            align_horizontal="center",
+            align_vertical="bottom",
+            margins=margins,
+            scale=2,
+            under_text_align="align_with_right",
+            left_box_text_align="center",
+            locale=LocaleSignPageParams(
+                digitally_signed_by="Signé numériquement par ",
+                date="Date: ",
+                signature="(signature)",
+            ),
+            datetime=CalculatedDatetimeSignPageParams(
+                calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=-3))
+            ),
+        ),
+    )
+)
 
 
 with open("signed.pdf", "wb+") as f:

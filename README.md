@@ -1,7 +1,5 @@
 ### Adobe Acrobat styled pdf document signing
 
-## Result
-
 <img width="610" alt="Screenshot 2024-11-16 at 14 05 44-min" src="https://github.com/user-attachments/assets/c0be4f39-df7d-477b-900d-7f471072c083">
 
 ```python

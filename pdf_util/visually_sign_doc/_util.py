@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Literal
 from typing import TypeVar
 from typing import Set
+from typing import Optional
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
@@ -19,7 +20,6 @@ __all__ = [
     "align_to_int",
     "pages_to_sign_to_indeces",
     "format_datetime",
-    "now_utc_plus_2",
     "now"
 ]
 
@@ -77,7 +77,10 @@ FormattedDate = TypeVar("FormattedDate", bound=str)
 FormattedTime = TypeVar("FormattedTime", bound=str)
 
 def format_datetime(dt: datetime, *, datefmt="%Y.%m.%d", timefmt="%H:%M:%S") -> tuple[FormattedDate, FormattedTime]:
-    def format_tz(tz: timezone) -> str:
+    def format_tz(tz: Optional[timezone]) -> str:
+        if tz is None:
+            return "+00'00"
+
         offset = tz.utcoffset(None)
         if offset is None:
             return "+00'00"
@@ -93,6 +96,3 @@ def format_datetime(dt: datetime, *, datefmt="%Y.%m.%d", timefmt="%H:%M:%S") -> 
     formatted_time = f"{dt.strftime(timefmt)} {format_tz(tz)}"
     return (formatted_date, formatted_time)
 
-
-def now_utc_plus_2() -> datetime:
-    return now(utc_tz_offset=timedelta(hours=2))

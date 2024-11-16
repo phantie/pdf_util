@@ -18,6 +18,12 @@ from pdf_util.visually_sign_doc.params import Margins
 from pdf_util.visually_sign_doc.params import UK_LOCALE_SIGN_PAGE_PARAMS
 from pdf_util.visually_sign_doc.params import EN_LOCALE_SIGN_PAGE_PARAMS
 from pdf_util.visually_sign_doc.params import LocaleSignPageParams
+from pdf_util.visually_sign_doc.params import CalculatedDatetimeSignPageParams
+from pdf_util.visually_sign_doc.params import ScalarDatetimeSignPageParams
+from pdf_util.visually_sign_doc._util import now
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
 
 margins = Margins.equal(50)
@@ -33,6 +39,7 @@ value = visually_sign_doc(value, params=SignDocParams(
         under_text_align="center",
         left_box_text_align="left",
         locale=EN_LOCALE_SIGN_PAGE_PARAMS,
+        datetime=ScalarDatetimeSignPageParams(datetime=datetime.now(tz=timezone(timedelta(hours=2)))),
     ),
 ))
 
@@ -47,6 +54,7 @@ value = visually_sign_doc(value, params=SignDocParams(
         scale=2,
         left_box_text_align="right",
         locale=UK_LOCALE_SIGN_PAGE_PARAMS,
+        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=7))),
     ),
 ))
 
@@ -65,6 +73,7 @@ value = visually_sign_doc(value, params=SignDocParams(
             date="Date: ",
             signature="(signature)",
         ),
+        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=-3))),
     ),
 ))
 

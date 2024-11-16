@@ -1,10 +1,12 @@
-
 from __future__ import annotations
+
 from typing import Literal
 from typing import TypeVar
 from typing import Annotated
 from typing import Set
 from typing import Self
+from typing import Callable
+from datetime import datetime
 
 import pydantic
 
@@ -34,6 +36,19 @@ EN_LOCALE_SIGN_PAGE_PARAMS = LocaleSignPageParams(
     signature="(signature)",
 )
 
+def default_calculate_datetime() -> datetime:
+    from pdf_util.visually_sign_doc._util import now
+    from datetime import timedelta
+    return now(utc_tz_offset=timedelta(hours=2))
+
+
+class CalculatedDatetimeSignPageParams(pydantic.BaseModel):
+    calculate_datetime: Callable[[], datetime] = default_calculate_datetime
+
+class ScalarDatetimeSignPageParams(pydantic.BaseModel):
+    datetime: datetime
+
+
 class SignPageParams(pydantic.BaseModel):
     signer_name: str
     left_box_text_align: Align = "left"
@@ -43,6 +58,7 @@ class SignPageParams(pydantic.BaseModel):
     align_horizontal: Literal["right", "center", "left"] = "right"
     align_vertical: Literal["bottom","center","up"] = "bottom"
     locale: LocaleSignPageParams = EN_LOCALE_SIGN_PAGE_PARAMS
+    datetime: CalculatedDatetimeSignPageParams | ScalarDatetimeSignPageParams = pydantic.Field(CalculatedDatetimeSignPageParams())
 
     model_config = pydantic.ConfigDict(validate_default=True, frozen=True)
 

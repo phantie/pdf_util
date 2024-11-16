@@ -1,10 +1,12 @@
 
 from pdf_util.visually_sign_doc.params import SignPageParams
+from pdf_util.visually_sign_doc.params import CalculatedDatetimeSignPageParams
+from pdf_util.visually_sign_doc.params import ScalarDatetimeSignPageParams
 from pdf_util.visually_sign_doc._util import derive_text_width
 from pdf_util.visually_sign_doc._util import split_full_name
 from pdf_util.visually_sign_doc._util import align_to_int
 from pdf_util.visually_sign_doc._util import format_datetime
-from pdf_util.visually_sign_doc._util import now_utc_plus_2
+from pdf_util.visually_sign_doc._util import now
 
 from functools import partial
 from pathlib import Path
@@ -18,7 +20,13 @@ def visually_sign_page(page: fitz.Page, params: SignPageParams) -> None:
     x_offset = 0
     y_offset = 0
 
-    date, time = format_datetime(now_utc_plus_2())
+    if isinstance(params.datetime, CalculatedDatetimeSignPageParams):
+        datetime = params.datetime.calculate_datetime()
+
+    elif isinstance(params.datetime, ScalarDatetimeSignPageParams):
+        datetime = params.datetime.datetime
+
+    date, time = format_datetime(datetime)
 
     font_path = str(Path(__file__).parent.parent/"assets"/"fonts"/"Roboto-Regular.ttf")
     fontname = "Roboto"

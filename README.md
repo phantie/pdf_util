@@ -18,6 +18,15 @@ from pdf_util.visually_sign_doc.params import FirstPage
 from pdf_util.visually_sign_doc.params import LastPage
 from pdf_util.visually_sign_doc.params import AllPages
 from pdf_util.visually_sign_doc.params import Margins
+from pdf_util.visually_sign_doc.params import UK_LOCALE_SIGN_PAGE_PARAMS
+from pdf_util.visually_sign_doc.params import EN_LOCALE_SIGN_PAGE_PARAMS
+from pdf_util.visually_sign_doc.params import LocaleSignPageParams
+from pdf_util.visually_sign_doc.params import CalculatedDatetimeSignPageParams
+from pdf_util.visually_sign_doc.params import ScalarDatetimeSignPageParams
+from pdf_util.visually_sign_doc._util import now
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
 
 margins = Margins.equal(50)
@@ -32,6 +41,8 @@ value = visually_sign_doc(value, params=SignDocParams(
         scale=2,
         under_text_align="center",
         left_box_text_align="left",
+        locale=EN_LOCALE_SIGN_PAGE_PARAMS,
+        datetime=ScalarDatetimeSignPageParams(datetime=datetime.now(tz=timezone(timedelta(hours=2)))),
     ),
 ))
 
@@ -45,6 +56,8 @@ value = visually_sign_doc(value, params=SignDocParams(
         margins=margins,
         scale=2,
         left_box_text_align="right",
+        locale=UK_LOCALE_SIGN_PAGE_PARAMS,
+        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=7))),
     ),
 ))
 
@@ -58,6 +71,12 @@ value = visually_sign_doc(value, params=SignDocParams(
         scale=2,
         under_text_align="align_with_right",
         left_box_text_align="center",
+        locale=LocaleSignPageParams(
+            digitally_signed_by="Signé numériquement par ",
+            date="Date: ",
+            signature="(signature)",
+        ),
+        datetime=CalculatedDatetimeSignPageParams(calculate_datetime=lambda: now(utc_tz_offset=timedelta(hours=-3))),
     ),
 ))
 
@@ -72,32 +91,37 @@ with open("signed.pdf", "wb+") as f:
 
 
 ## Avalable customizations
-| **Parameter**             | **Description**                                                   | **Type/Values**                                                                             |
-|---------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| **SignDocParams**         | Main parameters for the document where the signature is to be rendered. |                                                                                             |
-| `page_params`             | Parameters related to the rendering of a signature on a PDF page. | `SignPageParams`                                                                            |
-| `pages_to_sign`           | Specifies which pages in the PDF should include the signature.    | `PagesToSign` (FirstPage, LastPage, AllPages, SomePages)                                    |
-| **SignPageParams**        | Details the rendering of the signature on a page.                 |                                                                                             |
-| `signer_name`             | Displays the name of the signer next to the signature.            | `str`                                                                                       |
-| `left_box_text_align`     | Alignment of text within the left box area of the signature.      | `Align` ("left", "center", "right")                                                         |
-| `under_text_align`        | Alignment of text located under the signature box.                | `"align_with_right"`, `"center"`                                                            |
-| `scale`                   | Adjusts the size of the signature box and text.                   | `PositiveFloat`                                                                             |
-| `margins`                 | Sets the space around the signature box.                          | `Margins`                                                                                   |
-| `align_horizontal`        | Horizontal position of the signature on the page.                 | `"right"`, `"center"`, `"left"`                                                             |
-| `align_vertical`          | Vertical position of the signature on the page.                   | `"bottom"`, `"center"`, `"up"`                                                              |
-| `locale`                  | Locale-specific parameters for signature rendering.               | `LocaleSignPageParams`                                                                      |
-| **LocaleSignPageParams**  | Locale-specific parameters that are added to the rendering details. |                                                                                             |
-| `digitally_signed_by`     | "Digitally signed by " translation                                | `str`                                                                                       |
-| `date`                    | "Date: " translation                                              | `str`                                                                                       |
-| `signature`               | "(signature)" translation                                         | `str`                                                                                       |
-| **Margins**               | Parameters specifying the margins for the signature rendering.    |                                                                                             |
-| `left`                    | Space on the left side of the signature box.                      | `NonNegativeFloat`                                                                          |
-| `right`                   | Space on the right side of the signature box.                     | `NonNegativeFloat`                                                                          |
-| `top`                     | Space above the signature box.                                    | `NonNegativeFloat`                                                                          |
-| `bottom`                  | Space below the signature box.                                    | `NonNegativeFloat`                                                                          |
-| **PagesToSign Options**   | Defines the selection of pages to render a signature.             |                                                                                             |
-| `choice`                  | Indicates which pages will contain the signature.                 | `"first_page"`, `"last_page"`, `"all_pages"`, `"some_pages"`                                |
-| `pages`                   | Specifies exact pages for signature when `choice` is `some_pages`.| `Set[NonNegativeInt]`                                                                       |
+| **Parameter**                 | **Description**                                                   | **Type/Values**                                                                             |
+|-------------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| **SignDocParams**             | Main parameters for document where signature is rendered.         |                                                                                             |
+| `page_params`                 | Parameters related to rendering a signature on a PDF page.        | `SignPageParams`                                                                            |
+| `pages_to_sign`               | Specifies which pages in the PDF should include the signature.    | `PagesToSign` (FirstPage, LastPage, AllPages, SomePages)                                    |
+| **SignPageParams**            | Details rendering of the signature on a page.                     |                                                                                             |
+| `signer_name`                 | Displays the name of the signer next to the signature.            | `str`                                                                                       |
+| `left_box_text_align`         | Alignment of text within the left box area of the signature.      | `Align` ("left", "center", "right")                                                         |
+| `under_text_align`            | Alignment of text located under the signature box.                | `"align_with_right"`, `"center"`                                                            |
+| `scale`                       | Adjusts size of the signature box and text.                       | `PositiveFloat`                                                                             |
+| `margins`                     | Sets space around the signature box.                              | `Margins`                                                                                   |
+| `align_horizontal`            | Horizontal position of the signature on the page.                 | `"right"`, `"center"`, `"left"`                                                             |
+| `align_vertical`              | Vertical position of the signature on the page.                   | `"bottom"`, `"center"`, `"up"`                                                              |
+| `locale`                      | Locale-specific parameters for signature rendering.               | `LocaleSignPageParams`                                                                      |
+| `datetime`                    | Specifies date and time for the signature.                        | `CalculatedDatetimeSignPageParams` or `ScalarDatetimeSignPageParams`                        |
+| **CalculatedDatetimeSignPageParams** | Allows dynamic calculation of the signing datetime.        |                                                                                             |
+| `calculate_datetime`          | Function that returns the datetime to use when signing the page.  | `Callable[[], datetime]`                                                                    |
+| **ScalarDatetimeSignPageParams**    | Specifies a fixed datetime for the signature.               |                                                                                             |
+| `datetime`                    | Defines a static datetime value for signing.                      | `datetime`                                                                                  |
+| **LocaleSignPageParams**      | Locale-specific rendering details.                                |                                                                                             |
+| `digitally_signed_by`         | "Digitally signed by " translation.                               | `str`                                                                                       |
+| `date`                        | "Date: " translation.                                             | `str`                                                                                       |
+| `signature`                   | "(signature)" translation.                                        | `str`                                                                                       |
+| **Margins**                   | Parameters for signature rendering margins.                       |                                                                                             |
+| `left`                        | Space on the left of the signature box.                           | `NonNegativeFloat`                                                                          |
+| `right`                       | Space on the right of the signature box.                          | `NonNegativeFloat`                                                                          |
+| `top`                         | Space above the signature box.                                    | `NonNegativeFloat`                                                                          |
+| `bottom`                      | Space below the signature box.                                    | `NonNegativeFloat`                                                                          |
+| **PagesToSign Options**       | Defines page selection for signature rendering.                   |                                                                                             |
+| `choice`                      | Indicates which pages contain the signature.                      | `"first_page"`, `"last_page"`, `"all_pages"`, `"some_pages"`                                |
+| `pages`                       | Specific pages for signature when `choice` is `some_pages`.       | `Set[NonNegativeInt]`                                                                       |
 
 
 ### All utilities

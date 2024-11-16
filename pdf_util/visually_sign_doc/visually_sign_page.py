@@ -41,9 +41,9 @@ def visually_sign_page(page: fitz.Page, params: SignPageParams) -> None:
     left_box_lines = split_full_name(name)
 
     right_box_lines = [
-        f"Подписано цифровой подписью:",
+        f"{params.locale.digitally_signed_by}",
         f"{name}",
-        f"Дата: {date}",
+        f"{params.locale.date}{date}",
         f"{time}",
     ]
 
@@ -100,7 +100,7 @@ def visually_sign_page(page: fitz.Page, params: SignPageParams) -> None:
 
         return text_with_height_fit(
             page=page,
-            text="(підпис)",
+            text=params.locale.signature,
             y0=top_part_height + y_offset,
             fontname=fontname,
             fontsize=under_line_part_font_size,

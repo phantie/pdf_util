@@ -15,6 +15,25 @@ class SignDocParams(pydantic.BaseModel):
     pages_to_sign: Annotated[PagesToSign, pydantic.Field(discriminator="choice", default_factory=lambda: FirstPage())]
 
 
+
+class LocaleSignPageParams(pydantic.BaseModel):
+    digitally_signed_by: str
+    date: str
+    signature: str
+
+
+UK_LOCALE_SIGN_PAGE_PARAMS = LocaleSignPageParams(
+    digitally_signed_by="Підписано цифровим підписом:",
+    date="Дата: ",
+    signature="(підпис)",
+)
+
+EN_LOCALE_SIGN_PAGE_PARAMS = LocaleSignPageParams(
+    digitally_signed_by="Digitally signed by ",
+    date="Date: ",
+    signature="(signature)",
+)
+
 class SignPageParams(pydantic.BaseModel):
     signer_name: str
     left_box_text_align: Align = "left"
@@ -23,6 +42,7 @@ class SignPageParams(pydantic.BaseModel):
     margins: Margins = pydantic.Field(..., default_factory=lambda: Margins.equal(10))
     align_horizontal: Literal["right", "center", "left"] = "right"
     align_vertical: Literal["bottom","center","up"] = "bottom"
+    locale: LocaleSignPageParams = EN_LOCALE_SIGN_PAGE_PARAMS
 
     model_config = pydantic.ConfigDict(validate_default=True, frozen=True)
 

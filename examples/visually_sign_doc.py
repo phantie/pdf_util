@@ -15,6 +15,9 @@ from pdf_util.visually_sign_doc.params import FirstPage
 from pdf_util.visually_sign_doc.params import LastPage
 from pdf_util.visually_sign_doc.params import AllPages
 from pdf_util.visually_sign_doc.params import Margins
+from pdf_util.visually_sign_doc.params import UK_LOCALE_SIGN_PAGE_PARAMS
+from pdf_util.visually_sign_doc.params import EN_LOCALE_SIGN_PAGE_PARAMS
+from pdf_util.visually_sign_doc.params import LocaleSignPageParams
 
 
 margins = Margins.equal(50)
@@ -29,6 +32,7 @@ value = visually_sign_doc(value, params=SignDocParams(
         scale=2,
         under_text_align="center",
         left_box_text_align="left",
+        locale=EN_LOCALE_SIGN_PAGE_PARAMS,
     ),
 ))
 
@@ -42,6 +46,7 @@ value = visually_sign_doc(value, params=SignDocParams(
         margins=margins,
         scale=2,
         left_box_text_align="right",
+        locale=UK_LOCALE_SIGN_PAGE_PARAMS,
     ),
 ))
 
@@ -55,6 +60,11 @@ value = visually_sign_doc(value, params=SignDocParams(
         scale=2,
         under_text_align="align_with_right",
         left_box_text_align="center",
+        locale=LocaleSignPageParams(
+            digitally_signed_by="Signé numériquement par ",
+            date="Date: ",
+            signature="(signature)",
+        ),
     ),
 ))
 

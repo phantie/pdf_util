@@ -72,7 +72,6 @@ with open("signed.pdf", "wb+") as f:
 
 
 ## Avalable customizations
-
 | **Parameter**             | **Description**                                                   | **Type/Values**                                                                             |
 |---------------------------|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
 | **SignDocParams**         | Main parameters for the document where the signature is to be rendered. |                                                                                             |
@@ -86,6 +85,11 @@ with open("signed.pdf", "wb+") as f:
 | `margins`                 | Sets the space around the signature box.                          | `Margins`                                                                                   |
 | `align_horizontal`        | Horizontal position of the signature on the page.                 | `"right"`, `"center"`, `"left"`                                                             |
 | `align_vertical`          | Vertical position of the signature on the page.                   | `"bottom"`, `"center"`, `"up"`                                                              |
+| `locale`                  | Locale-specific parameters for signature rendering.               | `LocaleSignPageParams`                                                                      |
+| **LocaleSignPageParams**  | Locale-specific parameters that are added to the rendering details. |                                                                                             |
+| `digitally_signed_by`     | "Digitally signed by " translation                                | `str`                                                                                       |
+| `date`                    | "Date: " translation                                              | `str`                                                                                       |
+| `signature`               | "(signature)" translation                                         | `str`                                                                                       |
 | **Margins**               | Parameters specifying the margins for the signature rendering.    |                                                                                             |
 | `left`                    | Space on the left side of the signature box.                      | `NonNegativeFloat`                                                                          |
 | `right`                   | Space on the right side of the signature box.                     | `NonNegativeFloat`                                                                          |

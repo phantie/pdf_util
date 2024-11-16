@@ -34,7 +34,7 @@ margins = Margins.equal(50)
 value = visually_sign_doc(
     value,
     params=SignDocParams(
-        pages_to_sign=SomePages(pages=[0]),  # Sign 1st page
+        pages_to_sign=FirstPage(),
         page_params=SignPageParams(
             signer_name="Ali Baba Babababa",
             align_horizontal="left",
@@ -54,7 +54,7 @@ value = visually_sign_doc(
 value = visually_sign_doc(
     value,
     params=SignDocParams(
-        pages_to_sign=SomePages(pages=[0]),  # Sign 1st page
+        pages_to_sign=AllPages(),
         page_params=SignPageParams(
             signer_name="First Middle Last",
             align_horizontal="right",
